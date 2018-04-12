@@ -17,7 +17,7 @@ class Template(object):
 
 	def callback(self,msg):
 		self.twist.v=msg.axes[1]
-		self.twist.omega=msg.axes[3]
+		self.twist.omega=10*msg.axes[3]
 		print self.twist
 		self.publisher.publish(self.twist)
 		if msg.buttons[5]==1:
