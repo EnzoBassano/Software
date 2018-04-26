@@ -1,19 +1,31 @@
 #!/usr/bin/env python
 
 import rospy #importar ros para python
+import cv2
 from std_msgs.msg import String, Int32 # importar mensajes de ROS tipo String y tipo Int32
+from std_msgs.msg import String
+from cv_bridge import CvBridge, CvBridgeError
+from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist # importar mensajes de ROS tipo geometry / Twist
+from sensor_msgs.msg import Joy
+from duckietown_msgs.msg import Twist2DStamped
 
-
-class Template(object):
+class Controller(object):
 	def __init__(self, args):
-		super(Template, self).__init__()
+		super(Controller, self).__init__()
 		self.args = args
-
+		self.bridge = CvBridge()
+		self.image_sub = rospy.Subscriber("/usb_cam/image_raw",Image,self.callback)
 
 	#def publicar(self):
-
+	
+			
 	#def callback(self,msg):
+	def callback(self,data):
+		try:
+			cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+		except CvBridgeError as e:
+			print(e)
 
 
 def main():
