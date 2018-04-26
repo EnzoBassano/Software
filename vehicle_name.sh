@@ -1,4 +1,3 @@
 #!/usr/bin/env 
 
-export VEHICLE_NAME=makduckface
-
+export VEHICLE_NAME=lapatoneta
