@@ -11,13 +11,13 @@ class Controller(object):
 		super(Controller, self).__init__()
 		self.args = args
 		self.subscriber = rospy.Subscriber("/duckiebot/joy", Joy, self.callback)
-		self.publisher = rospy.Publishe("/duckiebot/wheels_driver_node/car_cmd", Twist, queue_size=10)
+		self.publisher = rospy.Publisher("/comando", Twist, queue_size=10)
 
 	#def publicar(self):
 	
 			
 	#def callback(self,msg):
-	def callback(self,mag):
+	def callback(self,msg):
 		x = msg.axes[1]
 		z = msg.axes[3] 
 		f = msg.button[5]
