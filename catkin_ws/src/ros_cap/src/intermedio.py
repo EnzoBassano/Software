@@ -18,7 +18,7 @@ class Velreal(object):
 		self.suscriber = rospy.Subscriber("/location",Point,self.callback_location)
 		self.publisher = rospy.Publisher("/duckiebot/wheels_driver_node/car_cmd", Twist, queue_size=10)
 		self.twist = Twist()
-	
+
 	def callback_comando(self,msg):
 		self.twist = msg
 
@@ -35,7 +35,7 @@ class Velreal(object):
 def main():
 	rospy.init_node('test') #creacion y registro del nodo!
 
-	obj = Template('args') # Crea un objeto del tipo Template, cuya definicion se encuentra arriba
+	obj = Velreal('args') # Crea un objeto del tipo Template, cuya definicion se encuentra arriba
 
 	#objeto.publicar() #llama al metodo publicar del objeto obj de tipo Template
 
