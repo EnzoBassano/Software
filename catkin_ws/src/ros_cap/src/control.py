@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
 import rospy #importar ros para python
+from sensor_msgs.msg import Image
 from duckietown_msgs.msg import Twist2DStamped
 from sensor_msgs.msg import Joy
+from cv_bridge import CvBridge
+import cv2 as cv
 from std_msgs.msg import String, Int32 # importar mensajes de ROS tipo String y tipo Int32
 from geometry_msgs.msg import Twist # importar mensajes de ROS tipo geometry / Twist
 
@@ -14,6 +17,11 @@ class Template(object):
 		self.subscriber = rospy.Subscriber("/duckiebot/joy", Joy,self.callback)
 		self.publisher = rospy.Publisher('/duckiebot/wheels_driver_node/car_cmd', Twist2DStamped, queue_size=1)
 		self.twist= Twist2DStamped()
+		self.subscriber = rospy.Subscriber("/duckiebot/camera_node/image/rect",Image,self.callback_image)
+		self.bridge = CvBridge()
+		self.image = Image()
+
+
 
 	def callback(self,msg):
 		self.twist.v=msg.axes[1]
@@ -25,6 +33,19 @@ class Template(object):
 			self.twist.omega=0
 			self.publisher.publish(self.twist)
 
+		if msg.buttons[0]==1:
+			img = self.bridge.imgmsg_to_cv2(self.image,"bgr8")
+			filename = str(rospy.get_time()) + ".jpg"
+			cv.imwrite("/home/duckiebot/nopatos/"+filename,img)
+
+	def callback_image(self,msg):
+		self.image=msg
+
+
+
+
+
+
 
 	#def publicar(self):
 
@@ -32,7 +53,7 @@ class Template(object):
 
 
 def main():
-	rospy.init_node('test') #creacion y registro del nodo!
+	rospy.init_node('control') #creacion y registro del nodo!
 
 	obj = Template('args') # Crea un objeto del tipo Template, cuya definicion se encuentra arriba
 
